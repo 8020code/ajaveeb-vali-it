@@ -1,0 +1,197 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<link rel="stylesheet" type="text/css" href="Style.css">
+
+		<title>Nature blog</title>
+	</head>
+
+	<body >
+
+		<!--  PUBLIC VIEW CONTENT  PAGE 1-->
+		 <div id="mainPublic" > <!--  Login Form -->
+			 <div id="login" class="padding">
+	     		 <form>
+	          		<input type="text" id="username" name="username" placeholder="Username">
+	         		<input type="password" id="password" name="password" placeholder="Password">
+	       			<input type="submit" value="Login" onClick="loginAjax()">
+				</form>
+
+			</div>
+
+			<div id="navigatePageSearch" class="center">
+				<form>
+			 		<input class="blogSearch" type="button" value="Show all posts !" onClick="return showAllBlogsPublic('showAllBlogsPublicPage','mainPublic');"/>
+			 	</form>
+			</div>
+
+    		<h1>5 newest posts:</h1>
+    		<div class="blogBackgroundColor">
+    			<p id="blogTableBodyNonTab" class="blogContent"></p> <!-- Print out 5 last posts-->
+    		</div>
+  		</div>
+
+
+  		<!--  PUBLIC VIEW CONTENT PAGE 2 -->
+
+   	    <div id="showAllBlogsPublicPage" style="display:none">
+
+	   	    <div id="navigatePageAll" class = "center">
+	   	    	<form>
+	   	    		<input class="blogSearch" type="button" value="Go Public Main page!" onClick="return mainLogin('mainPublic','showAllBlogsPublicPage');"/>
+	   	    	</form>
+	   	    </div>
+
+			<h1>All posts:</h1>
+
+			<div class="blogBackgroundColor">
+				<p id="blogTableBodyNonTabAll" class="blogContentAll"></p>  <!--Added - Print out all posts ! -->
+			</div>
+
+			<div class = "center">
+				<form id = "searchPost" action="#" >
+					<!-- <label for="blogSearch">Insert keyword:</label>  -->
+					<input type="text" id="blogSearch" name="blogSearch" placeholder="Search posts by any word..." required/>
+					<input class="blogSearch" type="button" value="Search" onClick="someIdPublic()" />
+				</form>
+			</div>
+			<div class="blogBackgroundColor">
+				<p id="searchResultsPublic" class="blogSearch"></p>
+			</div>
+		</div>
+
+
+
+
+  		<!--  CLIENT VIEW CONTENT PAGE 1 -->
+
+
+		<div id="mainClient" style="display:none">
+
+			<div id="logOut" class = "center">
+				<form>
+					<input class="loginButton" type="button" value="Log out" onClick="return mainLogin('mainPublic','mainClient');"/>
+   			  	</form>
+			</div>
+			<div id="navigatePageMain" class = "center">
+				<form>
+   			  		<input class="loginButton" type="button" value="New post" onClick="return newPostView('newPostPage','mainClient');"/>
+   			  		<input class="loginButton" type="button" value="Edit post" onClick="return editPostView('editPostPage','mainClient');"/>
+   			  		<input class="loginButton" type="button" value="Show all posts !" onClick="return showAllBlogsClient('showAllBlogsClientPage','mainClient');"/>
+				</form>
+			</div>
+
+
+
+    	 	<h1>my 5 newest posts:</h1>
+
+    	 	<div class="blogBackgroundColor">
+				<p id="blogTableBodyNonTabClient" class="blogContent"></p>  <!--Print out 5 last posts content, its already formatted! -->
+			</div>
+
+
+  		</div>
+
+
+  		<!--  CLIENT VIEW CONTENT PAGE 2 -->
+  		<!--  NEW POST VEIW -->
+
+
+
+  		<div id="newPostPage" style="display:none">
+  			<div id="navigatePageNew" class = "center">
+  				<form>
+  					<input class="loginButton" type="button" value="go back" onClick="return mainLogin('mainClient','newPostPage');"/>
+  				</form>
+  			</div>
+
+   			<h1>Create a new post!</h1>
+   			<div>
+   				<form action="#" method="post" name = "newPostForm">  <!-- Create forms for post and submit button -->
+					<!-- Both GET and POST create an array (e.g. array( key => value  , where keys are the names of the form controls and values are the input data from the user -->
+					<!-- do we really need this?!	<input type="text" id="blogId" name="blogId" value="1" hidden /> -->
+
+					<input type="text" id="blogName" name="blogName" pattern="[a-zA-Z0-9, ]{3,40}" title="Type 3 to 40 alphanumeric characters" placeholder="Blog heading name.." required /><br />
+					<textarea  id="blogContent" name="blogContent" rows="12" cols="120" placeholder="Blog content.." required></textarea><br/>
+					<input type="text" id="tagsFromPost" name="tagsFromPost" pattern = "^[0-9a-zA-z]+(,[0-9a-zA-z]+){0,2}$" title="3 tags max!" placeholder="Insert some tags, separated by commas.." /><br />
+					<select id="postStateSelect" name="postState" required>
+						<option value="">Choose</option>
+					</select>	<!-- pattern="^[0-9a-zA-z]+(,[0-9a-zA-z]+){0,2}$" -->
+
+					<input class="newPost" type="submit" value="Submit" />
+				</form>
+   			</div>
+  		</div>
+
+		<!--  EDIT POST VEIW -->
+
+  		<div id="editPostPage" style="display:none">
+  			<div id = "navigatePageEdit" class = "center">
+  				<form>
+  					<input class="loginButton" type="button" value="go back" onClick="return mainLogin('mainClient','editPostPage');"/>
+  				</form>
+
+   			</div>
+
+   			<h1> Edit post!</h1>
+   			<div>
+   				<form id ="editFormHtml"  action="#">  <!-- Create forms for post and submit button -->
+					<select id="blogIdDropDownEdit" name="blogId"></select><br>	<!-- This name is used for ajax individual element deletion -->
+					<input type="text" id="blogNameEdit" name="blogName" pattern="[a-zA-Z0-9, ]{3,40}" title="Type 3 to 20 alphanumeric characters" placeholder="Blog heading name.." required /><br />
+					<textarea  id="blogContentEdit" name="blogContent" rows="12" cols="120" placeholder="Blog content.." required></textarea><br/>
+					<input type="text" id="tagsFromPostEdit" name="tagsFromPost" pattern = "^[0-9a-zA-z]+(,[0-9a-zA-z]+){0,2}$" title="3 tags max!" placeholder="Insert some tags, separated by commas.." /><br />
+					<select id="postStateSelectEdit" name="postState" required>
+						<option value="">Choose</option>
+					</select>
+					<input class="blogSearch"  type="button" value="Submit" onClick="editFormAjax()" /> <!--used to be input type submit before 23.02.2017 10.57 -->
+				</form>
+   			</div>
+  		</div>
+			
+	<!-- Show all my blogs view  and delete entry and search-->
+
+   	    <div id="showAllBlogsClientPage" style="display:none">
+   	    	<div id = "navigatePageAllClient" class = "center">
+   	    		<form>
+   	    			<input class="blogSearch" type="button" value="Go to my main view" onClick="return mainLogin('mainClient','showAllBlogsClientPage');"/>
+   	    		</form>
+   	    	</div>
+
+	 		<h1>My view:</h1>
+
+			<div class = "center">
+				<form id ="deletePostForm" action="#" > <!-- Create form for delete, it requires a button click to activate method what then calls ajax -->
+				<!--<label for="blogIdDropDownDelete">Blog post number:</label>  -->
+				<select id="blogIdDropDownDelete" name="blogId"></select>	<!-- This name is used for ajax individual element deletion -->
+				<input type="button" value="Delete" onClick="deletePostById()"/>
+				</form>
+			</div>
+
+			<div class = "center">
+				<form id = "searchPostClient" action="#" >
+				<!-- <label for="blogSearch">Insert keyword:</label> -->
+				<input type="text" id="blogSearchClient" name="blogSearchClient" placeholder="Search posts by any word..." required/>
+				<input class="blogSearch" type="button" value="Search" onClick="someIdClient()" />
+				</form>
+			</div>
+
+			<div class ="blogBackgroundColor">
+				<p id ="searchResultsClient" class="blogSearch"></p>
+			</div>
+
+			<h1> My all posts:</h1>
+
+			<div class = "blogBackgroundColor">
+				<p id="blogTableBodyNonTabAllClient" class="blogContentAll"></p><br><br>  <!--Added - Print out all posts ! -->
+			</div>
+	 	</div>
+	 	<script  src="scripts/htmlVisibility.js"></script>
+	 	<script  src="scripts/statesForDropdown.js"></script>
+	 	<script  src="scripts/blogIdsForDropdown.js"></script>
+    <script  src="scripts/showPosts.js"></script>
+	 	<script  src="scripts/callingAjax.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+		<script type="text/javascript" src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
+	</body>
+</html>
